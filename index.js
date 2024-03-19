@@ -1,10 +1,12 @@
 document.addEventListener('DOMContentLoaded',function (){
     const grid=document.querySelector('.grid');
     const flagsLeft=document.querySelector('#flags-left');
+    const result = document.querySelector('#result');
     const width=10;
     let bombAmount=20;
     let squares=[];
-    console.log(grid);
+    let isGameOver = false;
+    // console.log(grid);
     //Creating the board
     function createBoard(){
         flagsLeft.innerHTML=bombAmount;
@@ -50,5 +52,33 @@ document.addEventListener('DOMContentLoaded',function (){
     createBoard()
     function click(square){
         console.log(square);
+        if(isGameOver ||square.classList.contains('checked') || square.classList.contains('flag'))return;
+        if(square.classList.contains('bomb')){
+            gameOver();
+        }else{
+            let total=square.getAttribute('data');
+            if(total !== 0){
+                square.classList.add('checked');
+                if(total===1)square.classList.add('one');
+                if(total===2)square.classList.add('two');
+                if(total===3)square.classList.add('three');
+                if(total===4)square.classList.add('four');
+                square.innerHTML=total;
+                return
+            }
+            checkSquare(square)
+        }
+    }   square.classList.add('checked');
+    function gameOver(){
+        result.innerHTML='BOOM! Game Over';
+        isGameOver=true;
+        //showing all bombs
+        squares.forEach(function(square){
+            if(square.classList.contains('bomb')){
+                square.innerHTML='💣'
+                square.classList.remove('bomb');
+                square.classList.add('checked');}
+        })
     }
+
 })
